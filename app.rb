@@ -1,106 +1,79 @@
 # App.rb
 require 'sinatra'
 require 'sinatra/activerecord'
-require 'roar/representer/json'
-require 'roar/representer/json/hal'
+require 'nokogiri'
 
-use Rack::Auth::Basic, "Restricted Area" do |username, password|
-  username == 'admin' and password == 'admin'
+set :database, 'sqlite3:giftcard.db'
+
+class Card < ActiveRecord::Base
+  validates :name, presence: true, length: { minimum: 3 }
+  validates :value, presence: true
 end
 
-set :database, 'sqlite3:todolist.db'
+class Company < ActiveRecord::Base; end
 
-class Todo < ActiveRecord::Base
-  validates :title, presence: true, length: { minimum: 3 }
-  validates :body, presence: true
+get '/cards' do
+  @cards = Card.order('created_at DESC')
+  erb :'cards/index'
 end
 
-module TodoRepresenter  
-  include Roar::Representer::JSON
-  include Roar::Representer::JSON::HAL
-
-  link :self do
-     {"href" => "/todos/#{id}"}
-  end
-
-  property :id
-  property :title
-  property :body
-  property :created_at
-  property :updated_at  
-end
-
-get '/' do
-  @pagetitle = "Niet Blendle"
-  @todos = Todo.order('created_at DESC')
-  @todos.to_json    
-  erb :'todos/index'
-end
-
-get '/todos/new' do
-  @pagetitle = 'New Todo'
-  @todo = Todo.new
-  erb :'todos/new'
-end
-
-post "/todos" do
-  @todo = Todo.new(params[:todo])
-  if @todo.save
-    redirect "/"
+get '/cards/new' do
+  @card = Card.new(params)
+  @company = Company.where(name: params[:name])
+  req_url = @company.first.url
+  code = params[:code]
+  scnd_code = params[:scnd_code]
+  response = RestClient.post(req_url,
+  {
+    CartId: code,
+    PIN: scnd_code
+  })
+  ## TODO: get value from response
+  @card.value = response.to_f
+  if @card.save
+    redirect 'cards:id'
   else
-    erb :"todos/new"
+    erb :'card/new'
   end
 end
 
-get '/todos/:id' do
-  @todo = Todo.find(params[:id])
-  @todo.extend(TodoRepresenter)
-  @todo.to_json
-end
-
-get '/todos/:id/edit' do
-  @todo = Todo.find(params[:id])
-  @pagetitle = 'Edit Form'
-  erb :'todos/edit'
-end
- 
-put "/todos/:id" do
-  @todo = Todo.find(params[:id])
-  if @todo.update_attributes(params[:todo])
-    redirect "/"
+post '/cards' do
+  @card = Card.new(params[:todo])
+  if @card.save
+    redirect 'cards:id'
   else
-    erb :"todos/edit"
+    erb :'card/new'
   end
 end
- 
-delete '/todos/:id' do
-  @todo = Todo.find(params[:id]).destroy
-  redirect '/'
+
+get '/cards/:id' do
+  @card = Card.find(params[:id])
+
+  path = Pathname(Dir.pwd)
+  xml = path.children.find{|n| n.extname == '.xml' && n.basename.to_s.include?('expert')}
+  products = Nokogiri::XML(xml.read).css('record')
+  product_prices = products.map{|n| [n.at('offerid').text, n.at('price').text.to_f]}
+
+  max_price = @card.value * 1.7
+  matches = product_prices.find_all{|n| n[1] < max_price && n[1] > @card.value}.sample(3)
+  match_products = matches.flat_map{|n| products.find{|x| x.at('offerid').text == n[0]}}
+  @products = match_products.flat_map{|n| [n.at('title').text, n.at('image').text, n.at('price').text, n.at('url').text]}
+  erb :'card/item'
 end
 
-get '/about' do   
-  @pagetitle = 'About Me'
-  erb :'pages/about'
+patch '/cards/:id' do
+  card = Card.find(params[:id])
+  price = params[:price]
+  card_value = card.value - price
+  card_value = 0 if card_value < 0
+  card.update(value: card_value)
+  redirect 'cards'
+  erb :'card/item'
 end
 
 helpers do
-  def pagetitle
-    if @pagetitle
-      '#{@pagetitle} -- My Todolist'
-    else
-      'My Todolist'
-    end
-  end
-
-  def pretty_date(time)
-  time.strftime('%d %b %Y')
-  end
-
-  def todo_show_page?
-  request.path_info =~ /\/todos\/\d+$/
-  end
-
-  def delete_todo_button(todo_id)
-    erb :_delete_todo_button, locals: { todo_id: todo_id}
+  def card_show_page?
+    request.path_info =~ /\/cards\/\d+$/
   end
 end
+
