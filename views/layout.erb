@@ -1,0 +1,18 @@
+<html>
+<head>
+  <title><%= @pagetitle %></title>
+  <link href="<%= url('/style.css') %>" rel="stylesheet" type="text/css" />
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/" class="home">Todolist</a></li>
+      <li><a href="/about">About Me</a></li>             
+      <li><a href="/todos/new">New Todo</a></li>                             
+    </ul>
+  </nav>
+  <div class="orangebar"></div>
+  <div id="content"><%= yield %></div>
+</body>
+</html>

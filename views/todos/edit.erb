@@ -1,0 +1,16 @@
+<div class="content">
+	<div class="title">Edit Todo</div>
+	<form action="/todos/<%= @todo.id %>" method="post">
+	  <input type="hidden" name="_method" value="put" /> 
+	 
+	  <label for="todo_title" class="smalltitle">Title:</label><br />
+	  <input id="todo_title" name="todo[title]" type="text" value="<%= @todo.title %>" />
+	  <br />
+	 
+	  <label for="todo_body" class="smalltitle">Body:</label><br />
+	  <textarea id="todo_body" name="todo[body]" rows="5"><%= @todo.body %></textarea>
+	  <br />
+	 
+	  <input type="submit" value="Edit Todo" />
+	</form>   
+</div>
