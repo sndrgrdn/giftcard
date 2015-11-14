@@ -10,9 +10,20 @@ class Card < ActiveRecord::Base
   validates :value, presence: true
 end
 
+class Company < ActiveRecord::Base; end
+
 get '/cards' do
   @cards = Card.order('created_at DESC')
   erb :'cards/index'
+end
+
+get '/cards/new' do
+  @card = Card.new(params[:todo])
+  if @card.save
+    redirect 'cards:id'
+  else
+    erb :'card/new'
+  end
 end
 
 post '/cards' do
@@ -26,6 +37,16 @@ end
 
 get '/cards/:id' do
   @card = Card.find(params[:id])
+
+  path = Pathname(Dir.pwd)
+  xml = path.children.find{|n| n.extname == '.xml'}
+  products = Nokogiri::XML(xml.read).css('product')
+  product_prices = products.map{|n| [n.at('TDProductId').text, n.at('price').text.to_f]}
+
+  max_price = @card.value * 1.7
+  matches = product_prices.find_all{|n| n[1] < max_price && n[1] > @card.value}.sample(3)
+  match_products = matches.flat_map{|n| products.find{|x| x.at('TDProductId').text == n[0]}}
+  @products = match_products.flat_map{|n| [n.at('name').text, n.at('imageUrl').text, n.at('price').text, n.at('advertiserProductUrl').text]}
   erb :'card/item'
 end
 
