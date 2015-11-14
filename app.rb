@@ -28,6 +28,7 @@ get '/cards/new' do
     CartId: code,
     PIN: scnd_code
   })
+  ## TODO: get value from response
   @card.value = response.to_f
   if @card.save
     redirect 'cards:id'
