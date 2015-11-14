@@ -7,6 +7,7 @@ gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'roar', '~> 0.12.9'
 gem 'rake'
+gem 'rest-client'
 
 group :development do
   gem 'shotgun'

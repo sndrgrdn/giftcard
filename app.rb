@@ -18,7 +18,17 @@ get '/cards' do
 end
 
 get '/cards/new' do
-  @card = Card.new(params[:todo])
+  @card = Card.new(params)
+  @company = Company.where(name: params[:name])
+  req_url = @company.first.url
+  code = params[:code]
+  scnd_code = params[:scnd_code]
+  response = RestClient.post(req_url,
+  {
+    CartId: code,
+    PIN: scnd_code
+  })
+  @card.value = response.to_f
   if @card.save
     redirect 'cards:id'
   else
@@ -51,7 +61,13 @@ get '/cards/:id' do
 end
 
 patch '/cards/:id' do
-
+  card = Card.find(params[:id])
+  price = params[:price]
+  card_value = card.value - price
+  card_value = 0 if card_value < 0
+  card.update(value: card_value)
+  redirect 'cards'
+  erb :'card/item'
 end
 
 helpers do
@@ -59,3 +75,4 @@ helpers do
     request.path_info =~ /\/cards\/\d+$/
   end
 end
+
