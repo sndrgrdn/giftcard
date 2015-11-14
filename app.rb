@@ -39,15 +39,19 @@ get '/cards/:id' do
   @card = Card.find(params[:id])
 
   path = Pathname(Dir.pwd)
-  xml = path.children.find{|n| n.extname == '.xml'}
-  products = Nokogiri::XML(xml.read).css('product')
-  product_prices = products.map{|n| [n.at('TDProductId').text, n.at('price').text.to_f]}
+  xml = path.children.find{|n| n.extname == '.xml' && n.basename.to_s.include?('expert')}
+  products = Nokogiri::XML(xml.read).css('record')
+  product_prices = products.map{|n| [n.at('offerid').text, n.at('price').text.to_f]}
 
   max_price = @card.value * 1.7
   matches = product_prices.find_all{|n| n[1] < max_price && n[1] > @card.value}.sample(3)
-  match_products = matches.flat_map{|n| products.find{|x| x.at('TDProductId').text == n[0]}}
-  @products = match_products.flat_map{|n| [n.at('name').text, n.at('imageUrl').text, n.at('price').text, n.at('advertiserProductUrl').text]}
+  match_products = matches.flat_map{|n| products.find{|x| x.at('offerid').text == n[0]}}
+  @products = match_products.flat_map{|n| [n.at('title').text, n.at('image').text, n.at('price').text, n.at('url').text]}
   erb :'card/item'
+end
+
+patch '/cards/:id' do
+
 end
 
 helpers do
