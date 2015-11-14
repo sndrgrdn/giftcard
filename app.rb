@@ -1,8 +1,6 @@
 # App.rb
 require 'sinatra'
 require 'sinatra/activerecord'
-require 'roar/representer/json'
-require 'roar/representer/json/hal'
 require 'nokogiri'
 
 set :database, 'sqlite3:giftcard.db'
@@ -28,23 +26,11 @@ end
 
 get '/cards/:id' do
   @card = Card.find(params[:id])
-end
-
-delete '/cards/:id' do
-  @card = Card.find(params[:id]).destroy
-  redirect '/'
-end
-
-get '/preferences' do
-  erb :'pages/preferences'
+  erb :'card/item'
 end
 
 helpers do
   def card_show_page?
     request.path_info =~ /\/cards\/\d+$/
-  end
-
-  def delete_card_button(card_id)
-    erb :_delete_card_button, locals: { card_id: card_id}
   end
 end
