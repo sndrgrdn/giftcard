@@ -6,8 +6,10 @@ gem 'sqlite3'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'roar', '~> 0.12.9'
+gem 'rake'
 
 group :development do
   gem 'shotgun'
+  gem 'pry'
   gem 'tux'
 end
