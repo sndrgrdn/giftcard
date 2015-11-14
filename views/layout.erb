@@ -1,18 +1,38 @@
 <html>
 <head>
-  <title><%= @pagetitle %></title>
+  <title>Spendit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Spendit">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link href="<%= url('/style.css') %>" rel="stylesheet" type="text/css" />
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="/" class="home">Todolist</a></li>
-      <li><a href="/about">About Me</a></li>             
-      <li><a href="/todos/new">New Todo</a></li>                             
-    </ul>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/cards">Spendit</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/cards">Cards</a></li>
+          <li><a href="/cards/new">New Card</a></li>
+        </ul>
+      </div>
+    </div>
   </nav>
-  <div class="orangebar"></div>
-  <div id="content"><%= yield %></div>
+
+  <div class="container"><%= yield %></div>
+  <script src="/js/jquery.js"></script>
+  <script src="/js/bootstrap.js"></script>
 </body>
 </html>

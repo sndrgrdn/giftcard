@@ -16,7 +16,7 @@ get '/cards' do
 end
 
 post '/cards' do
-  @card = Card.new(params[:todo])
+  @card = Card.new(params[:card])
   if @card.save
     redirect 'cards:id'
   else
@@ -24,13 +24,23 @@ post '/cards' do
   end
 end
 
+get '/cards/new' do
+  @card = Card.new
+  erb :'cards/new'
+end
+
 get '/cards/:id' do
   @card = Card.find(params[:id])
-  erb :'card/item'
+  @products = []
+  erb :'cards/show'
 end
+
+
 
 helpers do
   def card_show_page?
     request.path_info =~ /\/cards\/\d+$/
   end
 end
+
+# require'pry';binding.pry;

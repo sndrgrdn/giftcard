@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group">
+      <% @cards.each do |card| %>
+        <a href="/cards/<%= card.id %>" class="list-group-item">
+          <span class="row">
+            <span class="col-xs-9"><%= card.name %></span>
+            <span class="col-xs-3">&euro; <%= card.value %></span>
+          </span>
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>
