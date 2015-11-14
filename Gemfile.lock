@@ -18,12 +18,18 @@ GEM
     bond (0.5.1)
     builder (3.2.2)
     coderay (1.1.0)
+    domain_name (0.5.25)
+      unf (>= 0.0.5, < 1.0.0)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.6.11)
     json (1.8.1)
     method_source (0.8.2)
+    mime-types (2.6.2)
     mini_portile (0.6.0)
     minitest (5.4.2)
     multi_json (1.10.1)
+    netrc (0.10.3)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     pry (0.10.3)
@@ -40,6 +46,10 @@ GEM
       multi_json
       nokogiri
       uber
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     ripl (0.7.1)
       bond (~> 0.5.1)
     ripl-multi_line (0.3.1)
@@ -71,6 +81,9 @@ GEM
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uber (0.0.10)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
 
 PLATFORMS
   ruby
@@ -79,6 +92,7 @@ DEPENDENCIES
   activerecord
   pry
   rake
+  rest-client
   roar (~> 0.12.9)
   shotgun
   sinatra

@@ -4,6 +4,8 @@ class CreateCards < ActiveRecord::Migration
       c.string :name
       c.integer :value
       c.date :date
+      c.string :code
+      c.string :scnd_code
       c.timestamps
     end
   end
