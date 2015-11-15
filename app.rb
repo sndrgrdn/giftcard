@@ -34,7 +34,7 @@ post '/cards' do
     PIN: scnd_code
   }) if code && scnd_code && !req_url.empty?
   ## TODO: get value from response
-  params['card']['value'] = response.to_d
+  params['card']['value'] = response
   @card = Card.new(params[:card])
   if @card.save
     redirect 'cards'
