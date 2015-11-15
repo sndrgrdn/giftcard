@@ -1,0 +1,43 @@
+body {
+  background-color: #b3b3b3;
+  color: #fff;
+}
+.navbar-inverse {
+  background-color: rgb(24,8,97);
+}
+
+.navbar-brand > img {
+  height: 100%;
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+  background-color: #180826;
+}
+.btn-custom {
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+  border-radius: 50px;
+  padding: 10px;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: rgb(24,8,97);
+  border-color: rgb(24,8,97);
+}
+
+.btn-custom:hover, .btn-custom:focus, .btn-custom.focus {
+  color: #fff;
+}
+
+.list-group-item-custom {
+  border-radius: 50px !important;
+  margin-bottom: 10px;
+  padding: 15px 0;
+  border: none;
+}
+a.list-group-item, button.list-group-item {
+  color: rgb(24,8,97);
+  font-weight: bold;
+}
