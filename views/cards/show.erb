@@ -2,7 +2,7 @@
   <% @products.each do |product| %>
     <div class="col-xs-12">
       <div class="thumbnail">
-        <img src="<%= product[1] %>" alt="">
+        <img src="<%= product[1] %>" alt="" width="360">
         <div class="caption">
           <p><%= product[0] %></p>
           <form action="/cards/<%= @card.id %>" method="post">
