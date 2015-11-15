@@ -93,5 +93,3 @@ helpers do
     request.path_info =~ /\/cards\/\d+$/
   end
 end
-
-# require "pry"; binding.pry
