@@ -24,10 +24,16 @@ ActiveRecord::Schema.define(version: 20151115100920) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "url",        limit: 255
+    t.string   "name",          limit: 255
+    t.string   "url",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "product",       limit: 255
+    t.string   "price",         limit: 255
+    t.string   "product_id",    limit: 255
+    t.string   "image",         limit: 255
+    t.string   "product_url",   limit: 255
+    t.string   "product_title", limit: 255
   end
 
 end

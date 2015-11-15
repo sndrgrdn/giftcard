@@ -11,7 +11,11 @@ class Card < ActiveRecord::Base
   validates :value, presence: true
 end
 
-class Company < ActiveRecord::Base; end
+class Company < ActiveRecord::Base; validates :name, uniqueness: true end
+
+get '/' do
+  redirect 'cards'
+end
 
 get '/cards' do
   @cards = Card.order('created_at DESC')
@@ -28,11 +32,12 @@ post '/cards' do
   req_url = @company.first.url
   code = params[:card][:code]
   scnd_code = params[:card][:scnd_code]
-  response = RestClient.post(req_url,
-  {
+  response = RestClient.post(
+    req_url,
     CartId: code,
     PIN: scnd_code
-  }) if code && scnd_code && !req_url.empty?
+  ) if code && !req_url.empty?
+
   ## TODO: get value from response
   params['card']['value'] = response.to_d
   @card = Card.new(params[:card])
@@ -50,16 +55,15 @@ end
 
 get '/cards/:id' do
   @card = Card.find(params[:id])
-
   path = Pathname(Dir.pwd)
-  xml = path.children.find{|n| n.extname == '.xml' && n.basename.to_s.include?('expert')}
-  products = Nokogiri::XML(xml.read).css('record')
-  product_prices = products.map{|n| [n.at('offerid').text, n.at('price').text.to_f]}
-
-  max_price = @card.value * 1.7
+  company = Company.where(name: @card.name.downcase).first
+  xml = path.children.find{|n| n.extname == '.xml' && n.basename.to_s.include?(company.name)}
+  products = Nokogiri::XML(xml.read).css(company.product)
+  product_prices = products.map{|n| [n.at(company.product_id).text, n.at(company.price).text.to_f]}
+  max_price = @card.value == 0.0 ? 10 * 1.7 : @card.value * 1.7
   matches = product_prices.find_all{|n| n[1] < max_price && n[1] > @card.value}.sample(3)
-  match_products = matches.flat_map{|n| products.find{|x| x.at('offerid').text == n[0]}}
-  @products = match_products.map{|n| [n.at('title').text, n.at('image').text, n.at('price').text, n.at('url').text]}
+  match_products = matches.flat_map{|n| products.find{|x| x.at(company.product_id).text == n[0]}}
+  @products = match_products.map{|n| [n.at(company.product_title).text, n.at(company.image).text, n.at(company.price).text, n.at(company.product_url).text]}
   erb :'cards/show'
 end
 
