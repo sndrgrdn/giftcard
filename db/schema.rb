@@ -13,27 +13,27 @@
 
 ActiveRecord::Schema.define(version: 20151115100920) do
 
-  create_table "cards", force: :cascade do |t|
-    t.string   "name",       limit: 255
+  create_table "cards", force: true do |t|
+    t.string   "name"
     t.decimal  "value"
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "code",       limit: 255
-    t.string   "scnd_code",  limit: 255
+    t.string   "code"
+    t.string   "scnd_code"
   end
 
-  create_table "companies", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.string   "url",           limit: 255
+  create_table "companies", force: true do |t|
+    t.string   "name"
+    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "product",       limit: 255
-    t.string   "price",         limit: 255
-    t.string   "product_id",    limit: 255
-    t.string   "image",         limit: 255
-    t.string   "product_url",   limit: 255
-    t.string   "product_title", limit: 255
+    t.string   "product"
+    t.string   "price"
+    t.string   "product_id"
+    t.string   "image"
+    t.string   "product_url"
+    t.string   "product_title"
   end
 
 end
