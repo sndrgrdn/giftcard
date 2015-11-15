@@ -28,12 +28,12 @@ ActiveRecord::Schema.define(version: 20151115100920) do
     t.string   "url",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "product",       limit: 255
-    t.string   "price",         limit: 255
-    t.string   "product_id",    limit: 255
-    t.string   "image",         limit: 255
-    t.string   "product_url",   limit: 255
-    t.string   "product_title", limit: 255
+    t.string   "product"
+    t.string   "price"
+    t.string   "product_id"
+    t.string   "image"
+    t.string   "product_url"
+    t.string   "product_title"
   end
 
 end
