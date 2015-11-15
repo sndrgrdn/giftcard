@@ -39,7 +39,7 @@ post '/cards' do
   ) if code && !req_url.empty?
 
   ## TODO: get value from response
-  params['card']['value'] = response.to_f
+  params['card']['value'] = response.to_d
   @card = Card.new(params[:card])
   if @card.save
     redirect 'cards'
@@ -70,7 +70,7 @@ end
 patch '/cards/:id' do
   card = Card.find(params[:id])
   price = params[:price]
-  card_value = card.value - price
+  card_value = card.value - price.to_d
   card_value = 0 if card_value < 0
   card.update(value: card_value)
   redirect 'cards'
@@ -82,3 +82,5 @@ helpers do
     request.path_info =~ /\/cards\/\d+$/
   end
 end
+
+# require "pry";binding.pry
