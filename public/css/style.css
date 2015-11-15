@@ -41,3 +41,12 @@ a.list-group-item, button.list-group-item {
   color: rgb(24,8,97);
   font-weight: bold;
 }
+#barcode {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.show-row {
+  padding-bottom: 120px;
+}

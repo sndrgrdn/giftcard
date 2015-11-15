@@ -70,7 +70,7 @@ get '/cards/:id' do
   @products = match_products.map{|n| [n.at(company.product_title).text, n.at(company.image).text, n.at(company.price).text, n.at(company.product_url).text]}
 
   barcode = Barby::Code39.new(@card.code)
-  File.open("public/barcodes/#{@card.code}.png", 'w'){|f| f.write barcode.to_png }
+  File.open("public/barcodes/#{@card.code}.png", 'w'){|f| f.write barcode.to_png(height: 50, margin: 5) }
   @barcode = "/barcodes/#{@card.code}.png"
   erb :'cards/show'
 end
