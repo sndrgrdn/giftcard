@@ -66,7 +66,7 @@ end
 patch '/cards/:id' do
   card = Card.find(params[:id])
   price = params[:price]
-  card_value = card.value - price
+  card_value = card.value - price.to_f
   card_value = 0 if card_value < 0
   card.update(value: card_value)
   redirect 'cards'

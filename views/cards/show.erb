@@ -5,7 +5,12 @@
         <img src="<%= product[1] %>" alt="">
         <div class="caption">
           <h3><%= product[0] %></h3>
-          <p>&euro; <%= product[2] %>, <a href="#" class="btn btn-primary" role="button">Buy now</a></p>
+          <form action="/cards/<%= @card.id %>" method="post">
+            <input type="hidden" name="_method" value="patch" />
+            <input type="hidden" name="price" value="<%= product[2] %>" />
+            <input type="hidden" name="id" value="<%= @card.id %>" />
+            <p>&euro; <%= product[2] %>, <button type="submit" class="btn btn-primary" role="button">Buy now</button></p>
+          </form>
         </div>
       </div>
     </div>
