@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151114224707) do
+ActiveRecord::Schema.define(version: 20151115093033) do
 
   create_table "cards", force: true do |t|
     t.string   "name"
@@ -28,6 +28,12 @@ ActiveRecord::Schema.define(version: 20151114224707) do
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "product"
+    t.string   "price"
+    t.string   "product_id"
+    t.string   "image"
+    t.string   "product_url"
+    t.string   "product_title"
   end
 
 end
