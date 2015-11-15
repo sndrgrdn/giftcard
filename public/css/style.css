@@ -21,6 +21,16 @@ body {
   padding: 10px;
 }
 
+.btn-primary {
+  color: #fff;
+  background-color: rgb(24,8,97);
+  border-color: rgb(24,8,97);
+}
+
+.btn-custom:hover, .btn-custom:focus, .btn-custom.focus {
+  color: #fff;
+}
+
 .list-group-item-custom {
   border-radius: 50px !important;
   margin-bottom: 10px;
@@ -31,5 +41,3 @@ a.list-group-item, button.list-group-item {
   color: rgb(24,8,97);
   font-weight: bold;
 }
-/*blue = #180826
-b3b3b3*/
