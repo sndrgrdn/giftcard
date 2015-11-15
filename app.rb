@@ -38,7 +38,7 @@ post '/cards' do
   ) if code && !req_url.empty?
 
   ## TODO: get value from response
-  value = response.match(/(?=value)/)
+  value = response.match(/(?=value)/) if response
   params['card']['value'] = value
   @card = Card.new(params[:card])
   if @card.save
