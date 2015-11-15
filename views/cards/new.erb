@@ -6,14 +6,19 @@
     <form action="/cards" method="POST">
       <div class="form-group">
         <label for="cards_company">Company</label>
-        <select id="cards_company" name="card[company]" class="form-control">
-          <option value="scheerfoppen">Scheer &amp; Foppen</option>
+        <select id="cards_company" name="card[name]" class="form-control">
+          <option value="expert">Expert</option>
           <option value="mediamarkt">Mediamarkt</option>
         </select>
       </div>
       <div class="form-group">
         <label for="cards_code">Code</label>
         <input type="text" class="form-control" id="cards_code" name="card[code]">
+        <p class="help-block">You need the code you find on your card</p>
+      </div>
+      <div class="form-group">
+        <label for="cards_code">Scnd code</label>
+        <input type="text" class="form-control" id="cards_code" name="card[scnd_code]">
         <p class="help-block">You need the code you find on your card</p>
       </div>
       <div class="form-group">

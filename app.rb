@@ -2,6 +2,7 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'nokogiri'
+require 'rest_client'
 
 set :database, 'sqlite3:giftcard.db'
 
@@ -18,31 +19,27 @@ get '/cards' do
 end
 
 get '/cards/new' do
-  @card = Card.new(params)
-  @company = Company.where(name: params[:name])
+  @card = Card.new
+  erb :'cards/new'
+end
+
+post '/cards' do
+  @company = Company.where(name: params[:card][:name])
   req_url = @company.first.url
-  code = params[:code]
-  scnd_code = params[:scnd_code]
+  code = params[:card][:code]
+  scnd_code = params[:card][:scnd_code]
   response = RestClient.post(req_url,
   {
     CartId: code,
     PIN: scnd_code
-  })
+  }) if code && scnd_code && !req_url.empty?
   ## TODO: get value from response
-  @card.value = response.to_f
-  if @card.save
-    redirect 'cards:id'
-  else
-    erb :'card/new'
-  end
-end
-
-post '/cards' do
+  params['card']['value'] = response.to_f
   @card = Card.new(params[:card])
   if @card.save
-    redirect 'cards:id'
+    redirect 'cards'
   else
-    erb :'card/new'
+    erb :'cards/new'
   end
 end
 
@@ -62,8 +59,8 @@ get '/cards/:id' do
   max_price = @card.value * 1.7
   matches = product_prices.find_all{|n| n[1] < max_price && n[1] > @card.value}.sample(3)
   match_products = matches.flat_map{|n| products.find{|x| x.at('offerid').text == n[0]}}
-  @products = match_products.flat_map{|n| [n.at('title').text, n.at('image').text, n.at('price').text, n.at('url').text]}
-  erb :'card/item'
+  @products = match_products.map{|n| [n.at('title').text, n.at('image').text, n.at('price').text, n.at('url').text]}
+  erb :'cards/show'
 end
 
 patch '/cards/:id' do
