@@ -74,7 +74,8 @@ patch '/cards/:id' do
   card_value = card.value - price.to_d if card.value
   card_value = 0 if card.value && card_value < 0
   card.update(value: card_value) if card_value
-  redirect 'cards'
+  url = params[:url]
+  redirect url
   erb :'card/item'
 end
 

@@ -8,6 +8,7 @@
           <form action="/cards/<%= @card.id %>" method="post">
             <input type="hidden" name="_method" value="patch" />
             <input type="hidden" name="price" value="<%= product[2] %>" />
+            <input type="hidden" name="url" value="<%= product[3] %>" />
             <input type="hidden" name="id" value="<%= @card.id %>" />
             <hr>
             <p>
