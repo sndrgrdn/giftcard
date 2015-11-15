@@ -13,6 +13,10 @@ end
 
 class Company < ActiveRecord::Base; validates :name, uniqueness: true end
 
+get '/' do
+  redirect 'cards'
+end
+
 get '/cards' do
   @cards = Card.order('created_at DESC')
   erb :'cards/index'
@@ -71,6 +75,11 @@ patch '/cards/:id' do
   card.update(value: card_value)
   redirect 'cards'
   erb :'card/item'
+end
+
+get '/delete' do
+  Card.destroy_all
+  redirect '/cards'
 end
 
 helpers do
