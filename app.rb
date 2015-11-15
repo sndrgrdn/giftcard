@@ -13,6 +13,10 @@ end
 
 class Company < ActiveRecord::Base; validates :name, uniqueness: true end
 
+get '/' do
+  redirect 'cards'
+end
+
 get '/cards' do
   @cards = Card.order('created_at DESC')
   erb :'cards/index'
