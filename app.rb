@@ -3,6 +3,9 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'nokogiri'
 require 'rest_client'
+require 'barby/barcode/code_39'
+require 'barby/outputter/png_outputter'
+require 'chunky_png'
 
 set :database, 'sqlite3:giftcard.db'
 
@@ -65,6 +68,10 @@ get '/cards/:id' do
   matches = product_prices.find_all{|n| n[1] < max_price && n[1] > @card.value}.sample(3)
   match_products = matches.flat_map{|n| products.find{|x| x.at(company.product_id).text == n[0]}}
   @products = match_products.map{|n| [n.at(company.product_title).text, n.at(company.image).text, n.at(company.price).text, n.at(company.product_url).text]}
+
+  barcode = Barby::Code39.new(@card.code)
+  File.open("public/barcodes/#{@card.code}.png", 'w'){|f| f.write barcode.to_png(height: 50, margin: 5) }
+  @barcode = "/barcodes/#{@card.code}.png"
   erb :'cards/show'
 end
 
