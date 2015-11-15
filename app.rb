@@ -71,9 +71,9 @@ end
 patch '/cards/:id' do
   card = Card.find(params[:id])
   price = params[:price]
-  card_value = card.value - price.to_d
-  card_value = 0 if card_value < 0
-  card.update(value: card_value)
+  card_value = card.value - price.to_d if card.value
+  card_value = 0 if card.value && card_value < 0
+  card.update(value: card_value) if card_value
   redirect 'cards'
   erb :'card/item'
 end
